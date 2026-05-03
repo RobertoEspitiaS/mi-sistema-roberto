@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roberto · Hoy</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --ink: #0D0C0A;
+  --ink2: #3A3832;
+  --ink3: #7A766E;
+  --paper: #F6F3EC;
+  --paper2: #EDE9DF;
+  --paper3: #E2DDD4;
+  --line: #D5D0C6;
+  --red: #B83020;
+  --redb: #F5E4E0;
+  --gold: #A07010;
+  --goldb: #F5EDD4;
+  --green: #1A6035;
+  --greenb: #D8EDE2;
+  --blue: #1A3F72;
+  --blueb: #D4E2F5;
+  --r: 8px;
+}
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px 16px 48px;
+}
+
+/* ── HEADER ── */
+.top {
+  width: 100%;
+  max-width: 680px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.top-name {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.08em;
+}
+.top-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+}
+
+/* ── HOY CARD ── */
+.hoy {
+  width: 100%;
+  max-width: 680px;
+  background: var(--ink);
+  border-radius: 14px;
+  padding: 28px 32px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.hoy::after {
+  content: '';
+  position: absolute;
+  right: -40px; bottom: -40px;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #2A2820 0%, transparent 70%);
+  pointer-events: none;
+}
+.hoy-day {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: #6A6560;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.hoy-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.hoy-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  color: #F0EDE6;
+  line-height: 1.3;
+  margin-bottom: 10px;
+  max-width: 520px;
+}
+.hoy-focus {
+  font-size: 13px;
+  color: #9A968E;
+  line-height: 1.65;
+  margin-bottom: 20px;
+  max-width: 500px;
+}
+.hoy-timer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.timer-display {
+  font-family: 'DM Mono', monospace;
+  font-size: 32px;
+  font-weight: 500;
+  color: #F0EDE6;
+  letter-spacing: -0.02em;
+  min-width: 90px;
+}
+.timer-btn {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.timer-start { background: #F0EDE6; color: var(--ink); }
+.timer-start:hover { background: #fff; }
+.timer-reset { background: transparent; color: #6A6560; border: 1px solid #2E2C28; }
+.timer-reset:hover { border-color: #4A4840; color: #9A968E; }
+.hoy-why {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 0.5px solid #2A2820;
+  font-size: 12px;
+  color: #6A6560;
+  line-height: 1.65;
+}
+.hoy-why strong { color: #9A968E; }
+
+/* ── PASOS ── */
+.pasos {
+  width: 100%; max-width: 680px;
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: var(--r);
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+.pasos-header {
+  padding: 14px 20px 10px;
+  border-bottom: 0.5px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pasos-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pasos-prog {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--ink3);
+}
+.paso {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 13px 20px;
+  border-bottom: 0.5px solid var(--line);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.paso:last-child { border-bottom: none; }
+.paso:hover { background: var(--paper); }
+.paso.done { background: var(--greenb); }
+.paso-chk {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px;
+  transition: all 0.15s;
+}
+.paso.done .paso-chk { background: var(--green); border-color: var(--green); color: #fff; }
+.paso-body { flex: 1; }
+.paso-mins {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  margin-bottom: 3px;
+}
+.paso-text {
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.55;
+}
+.paso.done .paso-text { color: var(--green); text-decoration: line-through; opacity: 0.7; }
+.paso-output {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--blue);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+
+/* ── OUTPUT BOX ── */
+.output-box {
+  width: 100%; max-width: 680px;
+  border: 1.5px dashed var(--line);
+  border-radius: var(--r);
+  padding: 14px 20px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.output-box:hover { border-color: var(--ink3); }
+.output-box.filled { border-style: solid; border-color: var(--green); background: var(--greenb); }
+.ob-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+.output-box.filled .ob-label { color: var(--green); }
+.ob-text { font-size: 13px; color: var(--ink3); line-height: 1.6; }
+.output-box.filled .ob-text { color: var(--green); }
+
+/* ── SEMANA ── */
+.semana {
+  width: 100%; max-width: 680px;
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.sem-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.sem-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sem-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+.dias {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+.dia {
+  text-align: center;
+}
+.dia-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--ink3);
+  margin-bottom: 5px;
+  display: block;
+}
+.dia-dot {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dia-dot:hover { border-color: var(--ink3); }
+.dia-dot.lab { background: var(--blueb); border-color: var(--blue); }
+.dia-dot.contenido { background: var(--goldb); border-color: var(--gold); }
+.dia-dot.revision { background: var(--greenb); border-color: var(--green); }
+.dia-dot.done-lab { background: var(--blue); border-color: var(--blue); color: #fff; }
+.dia-dot.done-contenido { background: var(--gold); border-color: var(--gold); color: #fff; }
+.dia-dot.done-revision { background: var(--green); border-color: var(--green); color: #fff; }
+.dia-dot.skip { background: var(--redb); border-color: var(--red); }
+.dia-tipo {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  color: var(--ink3);
+  margin-top: 3px;
+  display: block;
+}
+
+/* ── MARCADOR ── */
+.marcador {
+  width: 100%; max-width: 680px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.m-card {
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: var(--r);
+  padding: 14px 16px;
+}
+.m-val {
+  font-family: 'Instrument Serif', serif;
+  font-size: 36px;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+.m-label { font-size: 11px; color: var(--ink3); margin-bottom: 6px; line-height: 1.4; }
+.m-goal { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--ink3); }
+.m-bar { height: 2px; background: var(--paper3); border-radius: 1px; margin-top: 8px; overflow: hidden; }
+.m-fill { height: 100%; border-radius: 1px; transition: width 0.5s; }
+
+/* ── SE PROFILE ── */
+.profile {
+  width: 100%; max-width: 680px;
+  background: #fff;
+  border: 0.5px solid var(--line);
+  border-radius: var(--r);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+.profile-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.skill-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 0.5px solid var(--line);
+}
+.skill-row:last-child { border-bottom: none; }
+.skill-name { font-size: 12px; color: var(--ink2); flex: 1; font-weight: 500; }
+.skill-bar-wrap { width: 140px; height: 4px; background: var(--paper3); border-radius: 2px; overflow: hidden; }
+.skill-bar { height: 100%; border-radius: 2px; transition: width 1s cubic-bezier(.4,0,.2,1); }
+.skill-level { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--ink3); min-width: 60px; text-align: right; }
+
+/* ── NAV SEMANAS ── */
+.week-nav {
+  width: 100%; max-width: 680px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.wbtn {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink3);
+  cursor: pointer;
+}
+.wbtn:hover { background: var(--paper2); color: var(--ink); }
+.winfo { flex: 1; text-align: center; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--ink3); }
+
+/* ── MODAL ── */
+.modal { display: none; position: fixed; inset: 0; background: rgba(13,12,10,0.6); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+.modal.on { display: flex; }
+.mbox { background: var(--paper); border-radius: 12px; max-width: 400px; width: 100%; padding: 20px; border: 0.5px solid var(--line); }
+.mtitle { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--ink); margin-bottom: 10px; }
+.mta { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--ink); background: #fff; resize: vertical; outline: none; min-height: 70px; line-height: 1.6; }
+.mta:focus { border-color: var(--ink2); }
+.mbtns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+.mbtn { font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--line); cursor: pointer; }
+.mbtn.save { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-name">ROBERTO ESPITIA · SA → ARQUITECTO</div>
+  <div class="top-date" id="topDate"></div>
+</div>
+
+<!-- HOY -->
+<div class="hoy" id="hoyCard">
+  <div class="hoy-day" id="hoyDay"></div>
+  <div class="hoy-type" id="hoyType"></div>
+  <div class="hoy-title" id="hoyTitle"></div>
+  <div class="hoy-focus" id="hoyFocus"></div>
+  <div class="hoy-timer">
+    <div class="timer-display" id="timerDisplay">60:00</div>
+    <button class="timer-btn timer-start" id="timerBtn" onclick="toggleTimer()">Iniciar sesión</button>
+    <button class="timer-btn timer-reset" onclick="resetTimer()">Reiniciar</button>
+  </div>
+  <div class="hoy-why" id="hoyWhy"></div>
+</div>
+
+<!-- PASOS DEL DÍA -->
+<div class="pasos" id="pasosCard">
+  <div class="pasos-header">
+    <div class="pasos-title">Tu hora de hoy — paso a paso</div>
+    <div class="pasos-prog" id="pasosProgress">0 / 0 pasos</div>
+  </div>
+  <div id="pasosList"></div>
+</div>
+
+<!-- OUTPUT -->
+<div class="output-box" id="outputBox" onclick="openOutputModal()">
+  <div class="ob-label">Output de hoy — ¿qué produjiste?</div>
+  <div class="ob-text" id="outputText">Al terminar la sesión, escribe en una línea qué produjiste. Un artefacto, un lab completado, un post publicado. Si no puedes escribirlo, la sesión no cuenta.</div>
+</div>
+
+<!-- SEMANA -->
+<div class="semana">
+  <div class="sem-header">
+    <div class="sem-title">Esta semana</div>
+    <div class="sem-badge" id="semBadge" style="background:var(--paper2);color:var(--ink3);">Sin iniciar</div>
+  </div>
+  <div class="dias" id="diasGrid"></div>
+</div>
+
+<!-- NAV SEMANAS -->
+<div class="week-nav">
+  <button class="wbtn" onclick="changeWeek(-1)">← Semana anterior</button>
+  <div class="winfo" id="weekInfo">Semana 1 · 2 jun – 7 jun 2025</div>
+  <button class="wbtn" onclick="changeWeek(1)">Siguiente semana →</button>
+</div>
+
+<!-- MARCADOR -->
+<div class="marcador">
+  <div class="m-card">
+    <div class="m-val" id="mv-dias">0</div>
+    <div class="m-label">Días ejecutados</div>
+    <div class="m-goal">meta: 5/semana</div>
+    <div class="m-bar"><div class="m-fill" id="mb-dias" style="width:0%;background:var(--blue);"></div></div>
+  </div>
+  <div class="m-card">
+    <div class="m-val" id="mv-labs">0</div>
+    <div class="m-label">Labs completados</div>
+    <div class="m-goal">meta: 18 en 2025</div>
+    <div class="m-bar"><div class="m-fill" id="mb-labs" style="width:0%;background:var(--red);"></div></div>
+  </div>
+  <div class="m-card">
+    <div class="m-val" id="mv-posts">0</div>
+    <div class="m-label">Posts publicados</div>
+    <div class="m-goal">meta: 2/semana</div>
+    <div class="m-bar"><div class="m-fill" id="mb-posts" style="width:0%;background:var(--gold);"></div></div>
+  </div>
+  <div class="m-card">
+    <div class="m-val" id="mv-pocs">0</div>
+    <div class="m-label">PoCs activos</div>
+    <div class="m-goal">meta: 3 en dic 2025</div>
+    <div class="m-bar"><div class="m-fill" id="mb-pocs" style="width:0%;background:var(--green);"></div></div>
+  </div>
+</div>
+
+<!-- PERFIL SE -->
+<div class="profile">
+  <div class="profile-header">Tu perfil SE — lo que el mercado mide</div>
+  <div id="skillList"></div>
+</div>
+
+<!-- MODAL OUTPUT -->
+<div class="modal" id="outputModal" onclick="closeModal(event,'outputModal')">
+  <div class="mbox">
+    <div class="mtitle">¿Qué produjiste hoy?</div>
+    <textarea class="mta" id="outputInput" placeholder="Lab 01 completado: agente vRx instalado en VM Windows, primer escaneo ejecutado, 3 CVEs críticos identificados con xTags..."></textarea>
+    <div class="mbtns">
+      <button class="mbtn" onclick="document.getElementById('outputModal').classList.remove('on')">Cancelar</button>
+      <button class="mbtn save" onclick="saveOutput()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DÍAS DE LA SEMANA ─────────────────────────────────────────────────
+// Lun, Mié, Vie = LAB técnico
+// Mar, Jue = CONTENIDO (LinkedIn, artefacto, comunidad)
+// Sáb = REVISIÓN con amigo IBM
+// Dom = descanso
+
+const DAY_TYPES = {
+  1: 'lab',       // lunes
+  2: 'contenido', // martes
+  3: 'lab',       // miércoles
+  4: 'contenido', // jueves
+  5: 'lab',       // viernes
+  6: 'revision',  // sábado
+  0: 'descanso'   // domingo
+};
+
+const DAY_LABELS = { 1:'Lun', 2:'Mar', 3:'Mié', 4:'Jue', 5:'Vie', 6:'Sáb', 0:'Dom' };
+
+// ── PLAN DE LABS ──────────────────────────────────────────────────────
+// 18 labs en 6 semanas de lab (3 labs/semana × 6 = 18)
+// Cada lab dura 1 hora → encaja perfecto en la sesión diaria
+
+const LABS = [
+  // Semana 1
+  { id:1, title:'vRx: instalar agente, primer escaneo, leer xTags', domain:'Vulnerability Management',
+    focus:'Dominas tu producto desde adentro. Los 35 ítems de MinMinas describen exactamente esto.',
+    why:'Un SE senior de Tenable o CrowdStrike puede hablar de VM porque lo ha hecho con las manos. Hoy empiezas a construir esa credibilidad.',
+    pasos:[
+      {mins:'0–15', text:'Instala el Agente vRx en una VM Windows sin parches recientes. Verifica que aparece en el tenant.'},
+      {mins:'15–35', text:'Ejecuta el primer escaneo completo. Mientras corre, lee la documentación de xTags: ¿qué diferencia CVSS de xTags?'},
+      {mins:'35–55', text:'Identifica los 3 CVEs con xTag más alto. Para cada uno anota: score CVSS, score xTag, si hay exploit público, pasos de remediación.'},
+      {mins:'55–60', text:'Genera el reporte PDF desde vRx. Ese es tu output de hoy.', output:'Reporte PDF de vRx con 3 CVEs críticos explicados en tus palabras'}
+    ]},
+  { id:2, title:'vRx multicliente: 3 grupos, 3 políticas, 3 reportes', domain:'Vulnerability Management',
+    focus:'Simulas exactamente el modelo de negocio de tus partners MSSP.',
+    why:'Cuando un SE de Palo Alto demuestra un producto, muestra casos de uso reales de clientes. Tú muestras el modelo multicliente que es lo que NetReady y cualquier MSSP necesita ver.',
+    pasos:[
+      {mins:'0–15', text:'Crea 3 grupos en vRx: "Cliente-Gobierno", "Cliente-Financiero", "Cliente-Salud". Asigna VMs diferentes a cada uno.'},
+      {mins:'15–35', text:'Configura políticas de escaneo distintas: frecuencia, severidad mínima para alertar, SLA de remediación (48hrs, 24hrs, 72hrs).'},
+      {mins:'35–55', text:'Genera un reporte ejecutivo por cliente. Documenta qué incluye y qué falta para un MSSP real.'},
+      {mins:'55–60', text:'Escribe en 3 líneas: ¿qué le dirías a NetReady sobre cómo vRx gestiona sus clientes?', output:'Guía "vRx para MSSP" de 1 página + 3 reportes de ejemplo'}
+    ]},
+  { id:3, title:'API de vRx → n8n: primer flujo de automatización', domain:'Automatización / SOAR',
+    focus:'Conectas vRx con el mundo. Este es el paso que convierte un scanner en una plataforma.',
+    why:'Los SEs de nivel alto no solo conocen su producto — conocen cómo se integra con el ecosistema. La DIAN, MINTIC y MinMinas exigen integraciones bidireccionales. Empieza hoy.',
+    pasos:[
+      {mins:'0–15', text:'Genera tu API Key en vRx. Prueba el primer endpoint en Postman: GET /api/v1/vulnerabilities. Verifica el JSON de respuesta.'},
+      {mins:'15–40', text:'En n8n Cloud: Schedule Trigger (cada 15 min) → HTTP Request a vRx API → Filter (solo CVEs Critical) → Send Email con resumen.'},
+      {mins:'40–55', text:'Dispara el workflow manualmente. Verifica que el email llega con los CVEs correctos.'},
+      {mins:'55–60', text:'Exporta el workflow como JSON. Ese es tu primer artefacto de integración.', output:'Workflow n8n exportado + screenshot del email de alerta automática'}
+    ]},
+
+  // Semana 2
+  { id:4, title:'Wazuh: mapear fuentes actuales y brechas de cobertura', domain:'SIEM',
+    focus:'Antes de integrar, entiendes exactamente qué ve tu SIEM hoy y qué le falta.',
+    why:'Un arquitecto senior entra a una reunión habiendo ya diagnosticado el estado actual. No pregunta "¿qué tienen?" — llega con el diagnóstico y propone la solución.',
+    pasos:[
+      {mins:'0–20', text:'Abre Wazuh. Lista todas las fuentes de datos activas: agentes, syslog, WMI. Documenta qué dispositivos de Eve-NG están conectados y cuáles no.'},
+      {mins:'20–40', text:'Lanza un nmap desde Eve-NG contra una VM. Verifica que Wazuh genera alerta. Copia el evento completo — ese es el formato que vRx debe complementar.'},
+      {mins:'40–55', text:'Identifica los 3 gaps más críticos: ¿qué activos no envían logs? ¿Qué eventos importantes no se están capturando?'},
+      {mins:'55–60', text:'Dibuja el diagrama actual en papel o draw.io: fuentes → Wazuh → alertas.', output:'Diagrama de Wazuh actual + lista de 3 gaps críticos de cobertura'}
+    ]},
+  { id:5, title:'vRx → Wazuh vía Syslog: postura de riesgo en el SIEM', domain:'SIEM + VM integrado',
+    focus:'El SIEM deja de ver solo tráfico y empieza a ver vulnerabilidades. Eso es correlación real.',
+    why:'NetReady, la DIAN y el MINTIC piden Syslog y WMI explícitamente. Este lab produce la integración que vale un PoC. Es el más importante del plan.',
+    pasos:[
+      {mins:'0–20', text:'En n8n: extiende el workflow del Lab 3. Después del filtro de críticos, agrega HTTP Request en formato CEF: CEF:0|Vicarius|vRx|1.0|vuln|{cve_id}|9|dst={ip}'},
+      {mins:'20–40', text:'Envía el evento CEF a Wazuh vía UDP 514. Verifica que aparece en el dashboard. Búscalo por la IP del activo vulnerable.'},
+      {mins:'40–55', text:'Crea regla en Wazuh: evento vRx (activo vulnerable) + tráfico nmap desde FortiGate → alerta compuesta "Activo crítico bajo reconocimiento activo".'},
+      {mins:'55–60', text:'Simula el escenario: lanza nmap, verifica la alerta correlacionada. Graba 2 minutos de pantalla.', output:'Video de 2–3 min: vRx detecta CVE → n8n → Wazuh → alerta correlacionada con tráfico de red'}
+    ]},
+  { id:6, title:'FortiGate + Sophos → Wazuh: el stack de tus partners en tu SIEM', domain:'SIEM + Perimetral',
+    focus:'Hablas el idioma técnico de Fortinet y Sophos — los dos stacks más frecuentes en tus partners.',
+    why:'Juan Páez pasó 8 años en McAfee hablando el idioma de los partners. Tú tienes Eve-NG con Fortinet y Sophos corriendo. Úsalos.',
+    pasos:[
+      {mins:'0–20', text:'FortiGate en Eve-NG: Log Settings → Remote Logging → Syslog. IP de tu VM Wazuh, UDP 514. Verifica que logs aparecen en Wazuh.'},
+      {mins:'20–35', text:'Sophos XG: misma configuración. Verifica eventos de tipo "web filtering" o "IPS" en Wazuh.'},
+      {mins:'35–55', text:'Crea política en FortiGate que bloquee tráfico hacia tu VM vulnerable. Observa el log de bloqueo en Wazuh junto al evento de vRx.'},
+      {mins:'55–60', text:'Ahora tienes 3 fuentes en Wazuh: vRx + FortiGate + Sophos. Eso es un SOC básico real. Documenta la arquitectura.', output:'Diagrama completo: FortiGate + Sophos + vRx → Wazuh. Con IPs, puertos y formatos de log'}
+    ]},
+
+  // Semana 3
+  { id:7, title:'MITRE ATT&CK: mapear tus CVEs a tácticas y técnicas', domain:'Threat Intelligence',
+    focus:'El lenguaje universal de la ciberseguridad. Todos los procesos de licitación lo exigen.',
+    why:'Cuando un SE de CrowdStrike habla con un CISO, habla en ATT&CK. No dice "hay un CVE crítico" — dice "hay una técnica de Initial Access explotable activamente en tus activos." Eso es el salto de nivel.',
+    pasos:[
+      {mins:'0–15', text:'Abre attack.mitre.org. Estudia las 14 tácticas. Entiende la diferencia entre táctica (el "qué") y técnica (el "cómo").'},
+      {mins:'15–40', text:'Toma los 3 CVEs más críticos que detectó vRx en el Lab 1. Para cada uno: busca en MITRE cuál técnica habilita ese CVE. Ejemplo: CVE de Log4Shell → T1190 (Exploit Public-Facing Application).'},
+      {mins:'40–55', text:'Crea un mini-mapa: CVE → Técnica ATT&CK → Táctica → ¿Tu SIEM tiene regla para detectar esto?'},
+      {mins:'55–60', text:'Escribe un párrafo explicando un CVE en lenguaje ATT&CK. Ese párrafo va en tu próximo post de LinkedIn.', output:'Mapa de 3 CVEs → técnicas ATT&CK → cobertura SIEM · Párrafo listo para LinkedIn'}
+    ]},
+  { id:8, title:'SOAR con Shuffle: playbook vRx → ticket → verificación', domain:'SOAR',
+    focus:'El ciclo completo de remediación automatizada. Ningún analista toca nada.',
+    why:'La DIAN pide SOAR como componente independiente. El MINTIC pide playbooks. El SE que puede mostrar un playbook funcionando en una demo gana el PoC.',
+    pasos:[
+      {mins:'0–15', text:'Instala Shuffle SOAR (docker) o usa la versión cloud gratuita. Crea tu primer workflow en blanco.'},
+      {mins:'15–40', text:'Construye: Webhook (recibe alerta de vRx vía n8n) → Condition (xTag ≥ 8?) → HTTP Request (crea ticket en Jira) → Send Slack/Email (notifica al analista).'},
+      {mins:'40–55', text:'Dispara el playbook manualmente con datos de prueba. Verifica el ticket en Jira y la notificación.'},
+      {mins:'55–60', text:'Exporta el playbook. Calcula: ¿cuántas horas de analista ahorra este flujo por semana en un MSSP con 10 clientes?', output:'Playbook Shuffle exportado + cálculo de ROI en horas de analista'}
+    ]},
+  { id:9, title:'Threat Intelligence con MISP: IoCs que enriquecen xTags', domain:'Threat Intelligence',
+    focus:'La inteligencia de amenazas no es un feed de datos — es contexto que cambia las prioridades.',
+    why:'El MINTIC pide TAXII explícito. La DIAN pide feeds de ThreatStream y SANS. Un SE que entiende cómo la TI enriquece la priorización de VM tiene un argumento técnico que pocos tienen.',
+    pasos:[
+      {mins:'0–15', text:'Instala MISP Community (Docker) o usa la instancia demo. Conecta 2 feeds OSINT gratuitos: MISP project feeds + Abuse.ch.'},
+      {mins:'15–40', text:'Busca en MISP si alguno de tus CVEs del Lab 1 tiene IoCs asociados. ¿Hay IPs o hashes relacionados con ese CVE en los feeds?'},
+      {mins:'40–55', text:'Correlación manual: CVE en vRx (xTag 8.5) + IoC activo en MISP (IP maliciosa vista esta semana) = prioridad máxima real. Documenta el razonamiento.'},
+      {mins:'55–60', text:'Escribe el caso de uso: "Así enriquece MISP la priorización de xTags en vRx."', output:'Caso de uso documentado: TI + VM = priorización inteligente · Listo para propuesta de licitación'}
+    ]},
+];
+
+// ── CONTENIDO (martes/jueves) ─────────────────────────────────────────
+const CONTENIDO = [
+  { title:'Post técnico de LinkedIn: lo que aprendiste en el último lab',
+    focus:'Visibilidad sin salir de Sincelejo. Tu audiencia son SEs de fabricantes, CISOs y recruiters.',
+    why:'Juan Páez es visible en LinkedIn. CrowdStrike lo encontró porque lo conocían. La visibilidad no es vanidad — es la forma en que el mercado te encuentra antes de que necesites buscar trabajo.',
+    pasos:[
+      {mins:'0–15', text:'Elige el lab más reciente. ¿Qué fue lo más sorprendente o contraintuitivo que aprendiste? Eso es el gancho del post.'},
+      {mins:'15–40', text:'Escribe el post en borrador: gancho (1 línea), contexto (2–3 líneas), qué hiciste (3–4 líneas), qué aprendiste (3–4 líneas), pregunta al final para generar conversación.'},
+      {mins:'40–55', text:'Revisa: ¿hay terminología de ATT&CK, MITRE, xTags, o alguna licitación real que puedas citar? Agrega una imagen: screenshot del lab, diagrama, o el output.'},
+      {mins:'55–60', text:'Publica. No "cuando esté perfecto" — publica hoy.', output:'Post publicado en LinkedIn con screenshot del lab'}
+    ]},
+  { title:'Artefacto técnico: blueprint o one-pager para un partner',
+    focus:'Un documento que el técnico del partner usa sin que tú estés presente.',
+    why:'Los SEs de nivel alto dejan artefactos, no solo demos. Un blueprint que el partner puede llevar a su cliente vale más que una hora de presentación.',
+    pasos:[
+      {mins:'0–15', text:'Elige el output del último lab. ¿Qué documento necesitaría el técnico de NetReady para replicar esto en su entorno?'},
+      {mins:'15–45', text:'Escribe el blueprint: contexto (para qué sirve), arquitectura (diagrama simple), pasos de configuración (con comandos reales), output esperado, y cómo medir si funcionó.'},
+      {mins:'45–55', text:'Revisa: ¿un técnico de nivel intermedio puede seguirlo sin llamarte? Si no, simplifica.'},
+      {mins:'55–60', text:'Guárdalo en formato PDF. Ese es tu artefacto de la semana.', output:'Blueprint de 1–2 páginas listo para enviar a un partner esta semana'}
+    ]},
+  { title:'Respuesta técnica en comunidad: Wazuh, Fortinet o Reddit r/netsec',
+    focus:'Construir reputación en comunidades donde los fabricantes reclutan.',
+    why:'Los mejores empleos no se anuncian — llegan por recomendación de alguien que te vio responder una pregunta técnica con precisión. Esto es networking sin networking.',
+    pasos:[
+      {mins:'0–10', text:'Entra a Wazuh Community Forum o Reddit r/netsec. Busca preguntas sin respuesta de los últimos 3 días sobre VM, SIEM, o automatización.'},
+      {mins:'10–40', text:'Elige una pregunta que puedas responder con lo que aprendiste en los labs. Escribe una respuesta completa, con comandos o configuración específica si aplica.'},
+      {mins:'40–55', text:'Revisa: ¿tu respuesta es más completa que las existentes? ¿Agrega algo que nadie más dijo? Si no, mejórala.'},
+      {mins:'55–60', text:'Publica. Guarda el link. En 6 meses tendrás un historial de respuestas técnicas que hablan por ti.', output:'Respuesta técnica publicada en comunidad · Link guardado en tu portafolio'}
+    ]},
+  { title:'Conexión en LinkedIn: SE de fabricante objetivo',
+    focus:'Construir la red antes de necesitarla. El mercado te encuentra porque ya te conoce.',
+    why:'Cuando postules a Palo Alto o CrowdStrike en 18 meses, alguien del equipo ya habrá visto tu trabajo. Esa diferencia vale.',
+    pasos:[
+      {mins:'0–15', text:'Identifica 3 SEs de fabricantes objetivo (Palo Alto, CrowdStrike, Wiz, Tenable) en LinkedIn LATAM. Lee sus posts recientes.'},
+      {mins:'15–35', text:'Escribe un mensaje de conexión para el más relevante: menciona un punto técnico específico de su contenido + tu experiencia en el AMP colombiano. Sin pedir nada.'},
+      {mins:'35–55', text:'Responde a 2–3 posts técnicos de SEs que ya tienes en tu red con comentarios de valor, no de cortesía.'},
+      {mins:'55–60', text:'Documenta: nombre, empresa, contexto de la conversación. En 6 meses tendrás 24 conexiones estratégicas construidas.', output:'1 conexión nueva con mensaje personalizado · 3 comentarios de valor publicados'}
+    ]},
+];
+
+// ── REVISIÓN (sábado) ─────────────────────────────────────────────────
+const REVISION = {
+  title:'Revisión semanal con tu amigo IBM — 30 min',
+  focus:'El ritual que garantiza que todo lo demás no quede en buenas intenciones.',
+  why:'Sin este ritual, el torbellino gana. Con él, tienes un sistema externo que te hace las preguntas que nadie más te hará. Esto es lo más importante de la semana.',
+  pasos:[
+    {mins:'0–5', text:'Actualiza el marcador: ¿cuántos días ejecutaste? ¿Labs completados? ¿Posts publicados?'},
+    {mins:'5–15', text:'Tu amigo te hace las 5 preguntas del protocolo. Tú respondes sin justificar — solo hechos.'},
+    {mins:'15–20', text:'Tú le haces sus preguntas sobre Claude aplicado a IBM. Él responde.'},
+    {mins:'20–28', text:'Compromisos específicos para la próxima semana: lab del lunes, tema del post del martes, partner que vas a contactar.'},
+    {mins:'28–30', text:'Intercambio técnico: tú enseñas algo de ciberseguridad, él algo de IBM Storage. 2 min cada uno.', output:'Compromisos declarados en voz alta · Marcador actualizado · Próxima sesión agendada'}
+  ]
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let currentWeek = 1;
+let timerSeconds = 3600;
+let timerInterval = null;
+let timerRunning = false;
+const state = {
+  weeks: {},
+  labs: 0, posts: 0, pocs: 0
+};
+
+function getWD(w) {
+  if (!state.weeks[w]) {
+    state.weeks[w] = { days: {1:null,2:null,3:null,4:null,5:null,6:null,0:null}, pasos: {}, output: '' };
+  }
+  return state.weeks[w];
+}
+
+// ── HOY ───────────────────────────────────────────────────────────────
+function getTodayContent() {
+  const dow = new Date().getDay(); // 0=dom, 1=lun...
+  const type = DAY_TYPES[dow];
+  if (type === 'descanso') return { type: 'descanso', title: 'Hoy descansas', focus: 'La recuperación es parte del sistema. Sin descanso, el sprint se convierte en desgaste.', why: '', pasos: [] };
+  if (type === 'revision') return { type: 'revision', ...REVISION };
+
+  const weekLabIndex = (currentWeek - 1) * 3;
+  if (type === 'lab') {
+    const labDayMap = {1:0, 3:1, 5:2}; // lun=lab0, mie=lab1, vie=lab2
+    const labIdx = weekLabIndex + (labDayMap[dow] ?? 0);
+    const lab = LABS[Math.min(labIdx, LABS.length - 1)];
+    return { type: 'lab', ...lab };
+  }
+  if (type === 'contenido') {
+    const contIdx = ((currentWeek - 1) * 2 + (dow === 4 ? 1 : 0)) % CONTENIDO.length;
+    return { type: 'contenido', ...CONTENIDO[contIdx] };
+  }
+}
+
+function renderHoy() {
+  const c = getTodayContent();
+  const days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  const dow = new Date().getDay();
+
+  document.getElementById('hoyDay').textContent = `${days[dow]} · sesión de mediodía`;
+
+  const typeConfig = {
+    lab: { label:'🔬 Lab técnico', bg:'#1A3F72', color:'#D4E2F5' },
+    contenido: { label:'✍️ Contenido & visibilidad', bg:'#7A5200', color:'#F5EDD4' },
+    revision: { label:'🔄 Revisión semanal', bg:'#1A6035', color:'#D8EDE2' },
+    descanso: { label:'☀️ Descanso', bg:'#5A5650', color:'#E8E4DC' }
+  };
+  const tc = typeConfig[c.type] || typeConfig.descanso;
+  const typeEl = document.getElementById('hoyType');
+  typeEl.textContent = tc.label;
+  typeEl.style.background = tc.bg;
+  typeEl.style.color = tc.color;
+
+  document.getElementById('hoyTitle').textContent = c.title;
+  document.getElementById('hoyFocus').textContent = c.focus;
+  document.getElementById('hoyWhy').innerHTML = c.why ? `<strong>Por qué importa para tu carrera:</strong> ${c.why}` : '';
+
+  renderPasos(c.pasos || []);
+}
+
+function renderPasos(pasos) {
+  const wd = getWD(currentWeek);
+  const cont = document.getElementById('pasosList');
+  const done = pasos.filter((_,i) => wd.pasos[i]).length;
+  document.getElementById('pasosProgress').textContent = `${done} / ${pasos.length} pasos`;
+
+  cont.innerHTML = pasos.map((p, i) => `
+    <div class="paso ${wd.pasos[i] ? 'done' : ''}" onclick="togglePaso(${i})">
+      <div class="paso-chk">${wd.pasos[i] ? '✓' : ''}</div>
+      <div class="paso-body">
+        <div class="paso-mins">${p.mins} min</div>
+        <div class="paso-text">${p.text}</div>
+        ${p.output ? `<div class="paso-output">→ Output: ${p.output}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function togglePaso(i) {
+  const wd = getWD(currentWeek);
+  wd.pasos[i] = !wd.pasos[i];
+  const c = getTodayContent();
+  renderPasos(c.pasos || []);
+}
+
+// ── SEMANA GRID ───────────────────────────────────────────────────────
+function renderSemana() {
+  const wd = getWD(currentWeek);
+  const start = new Date(2025, 5, 2);
+  start.setDate(start.getDate() + (currentWeek - 1) * 7);
+
+  const dayOrder = [1,2,3,4,5,6]; // lun a sáb
+  const done = dayOrder.filter(d => wd.days[d] === true).length;
+  const total = 6;
+  const pct = Math.round(done/total*100);
+
+  const badge = document.getElementById('semBadge');
+  if (done === 0) { badge.textContent = 'Sin iniciar'; badge.style.background = 'var(--paper2)'; badge.style.color = 'var(--ink3)'; }
+  else if (pct >= 80) { badge.textContent = `Verde · ${pct}%`; badge.style.background = 'var(--greenb)'; badge.style.color = 'var(--green)'; }
+  else if (pct >= 50) { badge.textContent = `Amarillo · ${pct}%`; badge.style.background = 'var(--goldb)'; badge.style.color = 'var(--gold)'; }
+  else { badge.textContent = `Rojo · ${pct}%`; badge.style.background = 'var(--redb)'; badge.style.color = 'var(--red)'; }
+
+  const typeEmoji = { lab:'🔬', contenido:'✍️', revision:'🔄', descanso:'·' };
+  const doneClass = { lab:'done-lab', contenido:'done-contenido', revision:'done-revision' };
+
+  document.getElementById('diasGrid').innerHTML = dayOrder.map(d => {
+    const dt = DAY_TYPES[d];
+    const isDone = wd.days[d] === true;
+    const isSkip = wd.days[d] === false;
+    const cls = isDone ? doneClass[dt] || '' : (isSkip ? 'skip' : dt === 'lab' ? 'lab' : dt === 'contenido' ? 'contenido' : dt === 'revision' ? 'revision' : '');
+    return `
+      <div class="dia">
+        <span class="dia-label">${DAY_LABELS[d]}</span>
+        <div class="dia-dot ${cls}" onclick="toggleDay(${d})" title="${isDone?'✓ Completado':isSkip?'✗ No completado':'Sin marcar'}">${isDone?'✓':isSkip?'✗':typeEmoji[dt]||'·'}</div>
+        <span class="dia-tipo">${dt==='descanso'?'':dt}</span>
+      </div>`;
+  }).join('');
+}
+
+function toggleDay(d) {
+  const wd = getWD(currentWeek);
+  if (wd.days[d] === null || wd.days[d] === undefined) wd.days[d] = true;
+  else if (wd.days[d] === true) wd.days[d] = false;
+  else wd.days[d] = null;
+  updateMarcador();
+  renderSemana();
+}
+
+// ── MARCADOR ──────────────────────────────────────────────────────────
+function updateMarcador() {
+  let dias = 0;
+  Object.values(state.weeks).forEach(w => {
+    Object.values(w.days).forEach(v => { if(v===true) dias++; });
+  });
+  const labsDone = Object.values(state.weeks).reduce((acc,w) => acc + Object.keys(w.pasos).filter(k=>w.pasos[k]).length, 0);
+  // rough lab count: every 4 pasos done = 1 lab
+  const labsEst = Math.floor(labsDone / 4);
+
+  document.getElementById('mv-dias').textContent = dias;
+  document.getElementById('mv-labs').textContent = labsEst;
+  document.getElementById('mv-posts').textContent = state.posts;
+  document.getElementById('mv-pocs').textContent = state.pocs;
+
+  document.getElementById('mb-dias').style.width = Math.min(100, dias/30*100)+'%';
+  document.getElementById('mb-labs').style.width = Math.min(100, labsEst/18*100)+'%';
+  document.getElementById('mb-posts').style.width = Math.min(100, state.posts/40*100)+'%';
+  document.getElementById('mb-pocs').style.width = Math.min(100, state.pocs/3*100)+'%';
+}
+
+// ── SKILLS ────────────────────────────────────────────────────────────
+const SKILLS = [
+  { name:'Vulnerability Management (vRx + xTags)', pct:85, color:'var(--red)', note:'Tu territorio. Base de todo.' },
+  { name:'SIEM — correlación y casos de uso', pct:30, color:'var(--blue)', note:'En construcción · Labs 4–7' },
+  { name:'SOAR — playbooks y orquestación', pct:15, color:'var(--gold)', note:'Próximo · Lab 8' },
+  { name:'MITRE ATT&CK aplicado', pct:20, color:'var(--green)', note:'Lab 7 esta semana' },
+  { name:'Threat Intelligence — MISP/TAXII', pct:10, color:'var(--ink3)', note:'Lab 9' },
+  { name:'Cloud Security — CSPM/ASM', pct:10, color:'var(--blue)', note:'Fase 2 · mes 6+' },
+  { name:'IAM/PAM — identidad y acceso', pct:10, color:'var(--ink3)', note:'Fase 2' },
+  { name:'NDR — detección en red', pct:5, color:'var(--ink3)', note:'Fase 2 · 2026' },
+  { name:'Visibilidad & marca personal', pct:25, color:'var(--gold)', note:'Martes y jueves' },
+];
+
+function renderSkills() {
+  document.getElementById('skillList').innerHTML = SKILLS.map(s => `
+    <div class="skill-row">
+      <div class="skill-name">${s.name}</div>
+      <div class="skill-bar-wrap"><div class="skill-bar" style="width:${s.pct}%;background:${s.color};"></div></div>
+      <div class="skill-level">${s.note}</div>
+    </div>`).join('');
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────────
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timerBtn').textContent = 'Continuar';
+  } else {
+    timerInterval = setInterval(() => {
+      if (timerSeconds > 0) {
+        timerSeconds--;
+        const m = Math.floor(timerSeconds/60).toString().padStart(2,'0');
+        const s = (timerSeconds%60).toString().padStart(2,'0');
+        document.getElementById('timerDisplay').textContent = `${m}:${s}`;
+      } else {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerBtn').textContent = '¡Tiempo!';
+        document.getElementById('timerDisplay').textContent = '00:00';
+      }
+    }, 1000);
+    timerRunning = true;
+    document.getElementById('timerBtn').textContent = 'Pausar';
+  }
+}
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  timerSeconds = 3600;
+  document.getElementById('timerDisplay').textContent = '60:00';
+  document.getElementById('timerBtn').textContent = 'Iniciar sesión';
+}
+
+// ── OUTPUT ────────────────────────────────────────────────────────────
+function openOutputModal() { document.getElementById('outputModal').classList.add('on'); }
+function saveOutput() {
+  const val = document.getElementById('outputInput').value;
+  const wd = getWD(currentWeek);
+  wd.output = val;
+  const box = document.getElementById('outputBox');
+  const txt = document.getElementById('outputText');
+  if (val) { box.classList.add('filled'); txt.textContent = val; }
+  else { box.classList.remove('filled'); txt.textContent = 'Al terminar la sesión, escribe en una línea qué produjiste.'; }
+  document.getElementById('outputModal').classList.remove('on');
+  state.posts = (state.posts + (val.toLowerCase().includes('post') || val.toLowerCase().includes('linkedin') ? 1 : 0));
+  state.labs = (state.labs + (val.toLowerCase().includes('lab') ? 1 : 0));
+  updateMarcador();
+}
+function closeModal(e, id) { if (e.target === document.getElementById(id)) document.getElementById(id).classList.remove('on'); }
+
+// ── WEEK NAV ──────────────────────────────────────────────────────────
+function changeWeek(d) {
+  currentWeek = Math.max(1, Math.min(6, currentWeek + d));
+  const start = new Date(2025, 5, 2);
+  start.setDate(start.getDate() + (currentWeek-1)*7);
+  const end = new Date(start); end.setDate(end.getDate()+5);
+  const fmt = x => x.toLocaleDateString('es-CO',{day:'numeric',month:'short'});
+  document.getElementById('weekInfo').textContent = `Semana ${currentWeek} · ${fmt(start)} – ${fmt(end)}`;
+  renderSemana();
+}
+
+// ── FECHA ─────────────────────────────────────────────────────────────
+function initDate() {
+  const now = new Date();
+  document.getElementById('topDate').textContent = now.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────
+initDate();
+renderHoy();
+renderSemana();
+renderSkills();
+updateMarcador();
+changeWeek(0);
+</script>
+</body>
+</html>
