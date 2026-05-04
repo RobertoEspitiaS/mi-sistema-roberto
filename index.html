@@ -399,6 +399,12 @@ body {
 .mtitle { font-family: 'Instrument Serif', serif; font-size: 18px; color: var(--ink); margin-bottom: 10px; }
 .mta { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; font-size: 13px; font-family: 'DM Sans', sans-serif; color: var(--ink); background: #fff; resize: vertical; outline: none; min-height: 70px; line-height: 1.6; }
 .mta:focus { border-color: var(--ink2); }
+.haxcamp-ref { display:flex; align-items:flex-start; gap:10px; background:#0F0E0C; border-radius:6px; padding:10px 14px; margin:14px 0 4px; }
+.hax-icon { font-size:16px; flex-shrink:0; }
+.hax-label { font-family:'DM Mono',monospace; font-size:9px; color:#6A6560; letter-spacing:0.1em; margin-bottom:3px; }
+.hax-module { font-size:12px; color:#E8C060; font-weight:500; margin-bottom:3px; }
+.hax-nota { font-size:11px; color:#9A968E; line-height:1.5; }
+.hax-link { font-family:'DM Mono',monospace; font-size:10px; color:#6A9ED8; text-decoration:none; margin-top:4px; display:inline-block; }
 .mbtns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
 .mbtn { font-family: 'DM Mono', monospace; font-size: 11px; padding: 6px 14px; border-radius: 20px; border: 1px solid var(--line); cursor: pointer; }
 .mbtn.save { background: var(--ink); color: var(--paper); border-color: var(--ink); }
@@ -423,6 +429,17 @@ body {
     <button class="timer-btn timer-reset" onclick="resetTimer()">Reiniciar</button>
   </div>
   <div class="hoy-why" id="hoyWhy"></div>
+</div>
+
+<!-- HAXCAMP REF -->
+<div class="haxcamp-ref" id="haxcampRef" style="display:none;width:100%;max-width:680px;margin-bottom:0;">
+  <div class="hax-icon">⛺</div>
+  <div>
+    <div class="hax-label">ABRE PRIMERO EN HAXCAMP</div>
+    <div class="hax-module"></div>
+    <div class="hax-nota"></div>
+    <a class="hax-link" href="https://haxcamp.com/" target="_blank">→ ir a haxcamp.com</a>
+  </div>
 </div>
 
 <!-- PASOS DEL DÍA -->
@@ -537,7 +554,8 @@ const LABS = [
       {mins:'55–60', text:'Genera el reporte PDF desde vRx. Ese es tu output de hoy.', output:'Reporte PDF de vRx con 3 CVEs críticos explicados en tus palabras'}
     ]},
   { id:2, title:'vRx multicliente: 3 grupos, 3 políticas, 3 reportes', domain:'Vulnerability Management',
-    focus:'Simulas exactamente el modelo de negocio de tus partners MSSP.',
+    haxcamp:{ module:'Introduction to SOC', url:'https://haxcamp.com/', nota:'Lee la sección sobre estructura MSSP — aplica esa lógica para estructurar tus 3 grupos en vRx.' },
+    focus:'Simulas exactamente cómo un MSSP gestiona múltiples clientes simultáneamente.',
     why:'Cuando un SE de Palo Alto demuestra un producto, muestra casos de uso reales de clientes. Tú muestras el modelo multicliente que es lo que NetReady y cualquier MSSP necesita ver.',
     pasos:[
       {mins:'0–15', text:'Crea 3 grupos en vRx: "Cliente-Gobierno", "Cliente-Financiero", "Cliente-Salud". Asigna VMs diferentes a cada uno.'},
@@ -545,8 +563,9 @@ const LABS = [
       {mins:'35–55', text:'Genera un reporte ejecutivo por cliente. Documenta qué incluye y qué falta para un MSSP real.'},
       {mins:'55–60', text:'Escribe en 3 líneas: ¿qué le dirías a NetReady sobre cómo vRx gestiona sus clientes?', output:'Guía "vRx para MSSP" de 1 página + 3 reportes de ejemplo'}
     ]},
-  { id:3, title:'API de vRx → n8n: primer flujo de automatización', domain:'Automatización / SOAR',
-    focus:'Conectas vRx con el mundo. Este es el paso que convierte un scanner en una plataforma.',
+  { id:3, title:'n8n para ciberseguridad: primer flujo vRx automatizado', domain:'Automatización / SOAR',
+    haxcamp:{ module:'Introduction to n8n for Cybersecurity', url:'https://haxcamp.com/', nota:'Completa este módulo COMPLETO antes de tocar vRx. Es exactamente el contexto que necesitas.' },
+    focus:'HaxCamp ya construyó este lab. Úsalo como guía y adapta el output a vRx.',
     why:'Los SEs de nivel alto no solo conocen su producto — conocen cómo se integra con el ecosistema. La DIAN, MINTIC y MinMinas exigen integraciones bidireccionales. Empieza hoy.',
     pasos:[
       {mins:'0–15', text:'Genera tu API Key en vRx. Prueba el primer endpoint en Postman: GET /api/v1/vulnerabilities. Verifica el JSON de respuesta.'},
@@ -556,8 +575,9 @@ const LABS = [
     ]},
 
   // Semana 2
-  { id:4, title:'Wazuh: mapear fuentes actuales y brechas de cobertura', domain:'SIEM',
-    focus:'Antes de integrar, entiendes exactamente qué ve tu SIEM hoy y qué le falta.',
+  { id:4, title:'Wazuh: fundamentos y reconocimiento de tu SIEM actual', domain:'SIEM',
+    haxcamp:{ module:'Hands-on with SIEM + Open Source SIEM Home-Lab with Wazuh', url:'https://haxcamp.com/', nota:'Empieza con Hands-on with SIEM (conceptos), luego el Home-Lab como guía técnica.' },
+    focus:'Antes de integrar, entiendes exactamente qué ve Wazuh hoy y qué le falta.',
     why:'Un arquitecto senior entra a una reunión habiendo ya diagnosticado el estado actual. No pregunta "¿qué tienen?" — llega con el diagnóstico y propone la solución.',
     pasos:[
       {mins:'0–20', text:'Abre Wazuh. Lista todas las fuentes de datos activas: agentes, syslog, WMI. Documenta qué dispositivos de Eve-NG están conectados y cuáles no.'},
@@ -565,7 +585,8 @@ const LABS = [
       {mins:'40–55', text:'Identifica los 3 gaps más críticos: ¿qué activos no envían logs? ¿Qué eventos importantes no se están capturando?'},
       {mins:'55–60', text:'Dibuja el diagrama actual en papel o draw.io: fuentes → Wazuh → alertas.', output:'Diagrama de Wazuh actual + lista de 3 gaps críticos de cobertura'}
     ]},
-  { id:5, title:'vRx → Wazuh vía Syslog: postura de riesgo en el SIEM', domain:'SIEM + VM integrado',
+  { id:5, title:'vRx → Wazuh: postura de riesgo como evento SIEM', domain:'SIEM + VM integrado',
+    haxcamp:{ module:'Wazuh to n8n: Automated Log Ingestion', url:'https://haxcamp.com/', nota:'Este módulo es exactamente tu lab. Síguelo como guía base y agrega vRx como fuente.' },
     focus:'El SIEM deja de ver solo tráfico y empieza a ver vulnerabilidades. Eso es correlación real.',
     why:'NetReady, la DIAN y el MINTIC piden Syslog y WMI explícitamente. Este lab produce la integración que vale un PoC. Es el más importante del plan.',
     pasos:[
@@ -574,8 +595,9 @@ const LABS = [
       {mins:'40–55', text:'Crea regla en Wazuh: evento vRx (activo vulnerable) + tráfico nmap desde FortiGate → alerta compuesta "Activo crítico bajo reconocimiento activo".'},
       {mins:'55–60', text:'Simula el escenario: lanza nmap, verifica la alerta correlacionada. Graba 2 minutos de pantalla.', output:'Video de 2–3 min: vRx detecta CVE → n8n → Wazuh → alerta correlacionada con tráfico de red'}
     ]},
-  { id:6, title:'FortiGate + Sophos → Wazuh: el stack de tus partners en tu SIEM', domain:'SIEM + Perimetral',
-    focus:'Hablas el idioma técnico de Fortinet y Sophos — los dos stacks más frecuentes en tus partners.',
+  { id:6, title:'FortiGate/Sophos → Wazuh: el stack de tus partners en tu SIEM', domain:'SIEM + Perimetral',
+    haxcamp:{ module:'Pfsense Firewall Logs Ingestion In Wazuh', url:'https://haxcamp.com/', nota:'Sigue el módulo de Pfsense como referencia exacta para configurar FortiGate y Sophos.' },
+    focus:'Dominas el stack que usan tus partners — Fortinet y Sophos — integrado con Wazuh.',
     why:'Juan Páez pasó 8 años en McAfee hablando el idioma de los partners. Tú tienes Eve-NG con Fortinet y Sophos corriendo. Úsalos.',
     pasos:[
       {mins:'0–20', text:'FortiGate en Eve-NG: Log Settings → Remote Logging → Syslog. IP de tu VM Wazuh, UDP 514. Verifica que logs aparecen en Wazuh.'},
@@ -585,8 +607,9 @@ const LABS = [
     ]},
 
   // Semana 3
-  { id:7, title:'MITRE ATT&CK: mapear tus CVEs a tácticas y técnicas', domain:'Threat Intelligence',
-    focus:'El lenguaje universal de la ciberseguridad. Todos los procesos de licitación lo exigen.',
+  { id:7, title:'MITRE ATT&CK: de CVEs a tácticas — el lenguaje del CISO', domain:'Threat Intelligence',
+    haxcamp:{ module:'Hands-on with Threat Intelligence', url:'https://haxcamp.com/', nota:'Completa la sección de MITRE ATT&CK mapping dentro del módulo de Threat Intelligence.' },
+    focus:'El lenguaje universal que todos los procesos de licitación exigen. Hoy lo dominas.',
     why:'Cuando un SE de CrowdStrike habla con un CISO, habla en ATT&CK. No dice "hay un CVE crítico" — dice "hay una técnica de Initial Access explotable activamente en tus activos." Eso es el salto de nivel.',
     pasos:[
       {mins:'0–15', text:'Abre attack.mitre.org. Estudia las 14 tácticas. Entiende la diferencia entre táctica (el "qué") y técnica (el "cómo").'},
@@ -595,6 +618,7 @@ const LABS = [
       {mins:'55–60', text:'Escribe un párrafo explicando un CVE en lenguaje ATT&CK. Ese párrafo va en tu próximo post de LinkedIn.', output:'Mapa de 3 CVEs → técnicas ATT&CK → cobertura SIEM · Párrafo listo para LinkedIn'}
     ]},
   { id:8, title:'SOAR con Shuffle: playbook vRx → ticket → verificación', domain:'SOAR',
+    haxcamp:{ module:'Hands-on with SOAR + Open Source SOAR Home-Lab using Shuffle', url:'https://haxcamp.com/', nota:'Empieza con Hands-on with SOAR (teoría), luego el Home-Lab de Shuffle como guía técnica.' },
     focus:'El ciclo completo de remediación automatizada. Ningún analista toca nada.',
     why:'La DIAN pide SOAR como componente independiente. El MINTIC pide playbooks. El SE que puede mostrar un playbook funcionando en una demo gana el PoC.',
     pasos:[
@@ -603,8 +627,9 @@ const LABS = [
       {mins:'40–55', text:'Dispara el playbook manualmente con datos de prueba. Verifica el ticket en Jira y la notificación.'},
       {mins:'55–60', text:'Exporta el playbook. Calcula: ¿cuántas horas de analista ahorra este flujo por semana en un MSSP con 10 clientes?', output:'Playbook Shuffle exportado + cálculo de ROI en horas de analista'}
     ]},
-  { id:9, title:'Threat Intelligence con MISP: IoCs que enriquecen xTags', domain:'Threat Intelligence',
-    focus:'La inteligencia de amenazas no es un feed de datos — es contexto que cambia las prioridades.',
+  { id:9, title:'Threat Intelligence con MISP: IoCs que cambian prioridades', domain:'Threat Intelligence',
+    haxcamp:{ module:'Hands-on with Threat Intelligence', url:'https://haxcamp.com/', nota:'Completa el módulo completo — especialmente MISP, feeds y enriquecimiento de alertas.' },
+    focus:'La inteligencia de amenazas no es un feed — es contexto que cambia las prioridades de remediación.',
     why:'El MINTIC pide TAXII explícito. La DIAN pide feeds de ThreatStream y SANS. Un SE que entiende cómo la TI enriquece la priorización de VM tiene un argumento técnico que pocos tienen.',
     pasos:[
       {mins:'0–15', text:'Instala MISP Community (Docker) o usa la instancia demo. Conecta 2 feeds OSINT gratuitos: MISP project feeds + Abuse.ch.'},
@@ -727,6 +752,16 @@ function renderHoy() {
   document.getElementById('hoyTitle').textContent = c.title;
   document.getElementById('hoyFocus').textContent = c.focus;
   document.getElementById('hoyWhy').innerHTML = c.why ? `<strong>Por qué importa para tu carrera:</strong> ${c.why}` : '';
+  // HaxCamp ref
+  const haxEl = document.getElementById('haxcampRef');
+  if (c.haxcamp) {
+    haxEl.style.display = 'flex';
+    haxEl.querySelector('.hax-module').textContent = '📚 ' + c.haxcamp.module;
+    haxEl.querySelector('.hax-nota').textContent = c.haxcamp.nota;
+    haxEl.querySelector('.hax-link').href = c.haxcamp.url;
+  } else {
+    haxEl.style.display = 'none';
+  }
 
   renderPasos(c.pasos || []);
 }
